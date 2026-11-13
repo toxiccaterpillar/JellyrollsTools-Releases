@@ -16,6 +16,8 @@ Short answer: it only works with your own game windows and your own computer, it
 - **Reads your Toon from the game's own Companion App API**, which runs on your own computer (`localhost`, ports 1547–1552). The game asks you once to allow it.
 - **Sends keyboard and mouse input to your Toontown windows** (multiboxing, Fishboxer), the same input you would give with your own keyboard and mouse.
 - **Looks at your screen** for the Cog Health overlay and for finding bobbers in Fishboxer. The pictures are looked at on your computer and thrown away. They are not saved or sent anywhere.
+- **Reads each game's own log file** (Multi Manager, Cog Overlay). The log shows the toon's name, whether the game lost its connection and why, how fast it runs, and which Cog HQ facility the toon is in. It only reads; it works for any Toontown Rewritten window, including ones not started here. The Cog Overlay uses the facility to name the right boss (Factory Foreman, Mint Auditor, Office Clerk, Club President).
+- **Checks that your game files are up to date** (Multi Manager). It reads the files in your Toontown Rewritten folder, works out their fingerprints and compares them with the file list Toontown Rewritten publishes for its official launcher. It only looks: if an update is needed it tells you to open the official launcher once.
 - **Starts the game for you** (Multi Manager / Multitoon Launcher) by logging in with Toontown Rewritten's official login API.
 
 ### What it does *not* do
@@ -29,7 +31,8 @@ Short answer: it only works with your own game windows and your own computer, it
 |---|---|
 | Your Toon's information | the game on your own PC (`localhost`) |
 | Logging in to launch the game | `www.toontownrewritten.com` (the official login API) |
-| Invasions, Field Offices, Doodles, population, Silly Meter, release notes | `www.toontownrewritten.com` (the official public APIs) |
+| Invasions, Field Offices, Doodles, population, Silly Meter, release notes, game status, the Cavalcade, Riggy's donations, racing leaderboards | `www.toontownrewritten.com` (the official public APIs) |
+| The list of the newest game files (to check yours are up to date) | `cdn.toontownrewritten.com` (the file list the official launcher uses) |
 | Toon pictures | `rendition.toontownrewritten.com` (the game's own picture service) |
 | Guide articles and pictures | `toontownrewritten.wiki` |
 | Looking for a newer version | `api.github.com` and the release page on GitHub |
@@ -43,13 +46,15 @@ Windows only lets a program send keys and clicks to a game window that runs at t
 - Passwords are stored in **Windows Credential Manager**, the same place Windows keeps your other saved passwords. They are **not** written to the program's settings file or to its log.
 - The settings file only holds your usernames, which accounts are ticked, and the path to the game.
 - Passwords are only ever sent to Toontown Rewritten's official login address. Removing an account in Account Manager also deletes its saved password.
-- The log hides the game's login cookie (it shows only the first and last few characters).
+- The game's login cookie is never written to the log.
 - You can see and delete everything yourself: Windows search → **Credential Manager** → **Windows Credentials** → look for `MultiLauncherService`.
 
 ### What it saves on your PC
 - Settings: `%APPDATA%\JellyrollsTools\`
 - Launcher: `%APPDATA%\MultiLauncher\` (usernames, a log, which game belongs to which account)
 - Toon pictures it has downloaded, in the same Jellyroll's Tools folder.
+- The fingerprints of your game files from the last update check (`game_hashes.json`), so the next check is quick.
+- `crash.log` in the Jellyroll's Tools folder: if the program hits an unexpected error, the details are written there.
 
 Delete those folders and the saved passwords (above) and nothing of the program is left behind.
 
@@ -85,4 +90,4 @@ If you're not comfortable, don't run it. Questions are welcome in the Issues tab
 4. Press **Help** in the program's top bar for every feature and hotkey.
 
 ## Problems or ideas
-Open an issue on this repository and say which Windows version you use, what you pressed, and what you expected. Screenshots help a lot.
+Open an issue on this repository and say which Windows version you use, what you pressed, and what you expected. Screenshots help a lot. If the program closed or misbehaved, attach `%APPDATA%\JellyrollsTools\crash.log` if it exists.
